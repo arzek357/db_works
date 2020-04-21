@@ -1,0 +1,53 @@
+GEODATA
+1) 
+SELECT gci.title_ru, gco.title_ru, gre.title_ru 
+FROM geodata._cities gci,geodata._countries gco,geodata._regions gre
+WHERE gci.country_id=gco.country_id AND gci.region_id=gre.region_id;
+
+2)
+SELECT gci.title_ru, gco.title_ru, gre.title_ru 
+FROM geodata._cities gci,geodata._countries gco,geodata._regions gre
+WHERE gci.country_id=gco.country_id AND gci.region_id=gre.region_id AND gre.title_ru LIKE ('Московская область');
+
+Employes
+1)
+SELECT edep.dept_name,count(*) active_workers_count,avg(es.salary) average_salary FROM employees.salaries es,employees.dept_emp ed,employees.departments edep
+WHERE es.emp_no = ed.emp_no AND edep.dept_no=ed.dept_no AND es.to_date LIKE ('9999-01-01')
+GROUP BY ed.dept_no;
+2)
+SELECT ee.first_name,ee.last_name,es.salary 
+FROM employees.salaries es,employees.employees ee 
+WHERE ee.emp_no=es.emp_no 
+AND es.to_date LIKE ('9999-01-01') 
+ORDER BY es.salary 
+DESC LIMIT 1;
+3)
+DELETE ee.*,ede.*,edm.*,es.* 
+FROM employees.employees ee, employees.dept_emp ede, employees.dept_manage edm , employees.salaries es 
+WHERE ee.emp_no IN
+(SELECT es.emp_no 
+FROM employees.salaries es
+WHERE es.to_date LIKE ('9999-01-01') 
+ORDER BY es.salary 
+DESC LIMIT 1);
+4)
+DELETE ee.* 
+FROM employees.employees ee 
+WHERE ee.emp_no 
+= 
+(SELECT * FROM (SELECT es.emp_no FROM employees.salaries es WHERE es.salary = (SELECT max(es.salary) FROM employees.salaries es) AND es.to_date LIKE ('9999-01-01')) AS eek);
+5)
+SELECT edep.dept_name,count(*) 
+FROM employees.employees ee,employees.dept_emp ed,employees.departments edep
+WHERE ee.emp_no = ed.emp_no 
+AND edep.dept_no=ed.dept_no 
+AND ed.to_date LIKE ('9999-01-01')
+GROUP BY ed.dept_no;
+6)
+SELECT edep.dept_name,count(*) active_workers_count,sum(es.salary) every_mouth_dept_salary 
+FROM employees.salaries es,employees.dept_emp ed,employees.departments edep
+WHERE es.emp_no = ed.emp_no 
+AND edep.dept_no=ed.dept_no 
+AND es.to_date LIKE ('9999-01-01') 
+AND ed.to_date LIKE ('9999-01-01')
+GROUP BY ed.dept_no;
