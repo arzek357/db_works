@@ -33,9 +33,9 @@ DESC LIMIT 1);
 4)
 DELETE ee.* 
 FROM employees.employees ee 
-WHERE ee.emp_no 
-= 
-(SELECT * FROM (SELECT es.emp_no FROM employees.salaries es WHERE es.salary = (SELECT max(es.salary) FROM employees.salaries es) AND es.to_date LIKE ('9999-01-01')) AS eek);
+WHERE ee.emp_no =( 
+SELECT es.emp_no FROM employees.salaries es
+WHERE es.salary = (SELECT max(es.salary) FROM employees.salaries es) AND es.to_date LIKE ('9999-01-01'));
 5)
 SELECT edep.dept_name,count(*) 
 FROM employees.employees ee,employees.dept_emp ed,employees.departments edep
