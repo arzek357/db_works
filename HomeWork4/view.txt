@@ -1,0 +1,18 @@
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `employees`.`dept_workercount_avgsalary` AS
+    SELECT 
+        `edep`.`dept_name` AS `dept_name`,
+        COUNT(0) AS `active_workers_count`,
+        AVG(`es`.`salary`) AS `average_salary`
+    FROM
+        ((`employees`.`salaries` `es`
+        JOIN `employees`.`dept_emp` `ed`)
+        JOIN `employees`.`departments` `edep`)
+    WHERE
+        ((`es`.`emp_no` = `ed`.`emp_no`)
+            AND (`edep`.`dept_no` = `ed`.`dept_no`)
+            AND (`es`.`to_date` LIKE '9999-01-01'))
+    GROUP BY `ed`.`dept_no`

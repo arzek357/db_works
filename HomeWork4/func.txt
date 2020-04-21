@@ -1,0 +1,7 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `new_function`( first_n varchar(14),second_n varchar(16) ) RETURNS int
+    READS SQL DATA
+BEGIN
+declare emp_nom integer;
+set emp_nom = (SELECT emp_no FROM employees WHERE first_name=first_n AND last_name=second_n);
+RETURN emp_nom;
+END
