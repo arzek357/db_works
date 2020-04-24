@@ -1,0 +1,5 @@
+BEGIN;
+UPDATE salaries SET to_date = '2020-04-24' WHERE emp_no = 10001 AND to_date = '9999-01-01';
+INSERT INTO salaries (emp_no,salary,from_date,to_date) VALUES (10001,200000,'2020-04-24','9999-01-01');
+COMMIT;
+Данная транзакция обновляет зарплату сотрудника и грамотно логирует это в таблице salaries.
